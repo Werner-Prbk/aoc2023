@@ -1,6 +1,3 @@
-from operator import truediv
-
-
 def find_symbols(lines : []):
     positions = []
     for row in range(len(lines)):
@@ -32,53 +29,38 @@ def find_numbers(lines : []):
     
     return numbers
 
-def get_number_at_pos(pos : (), lines : []):
-    row : str = lines[pos[0]]
-    num = ""
-    for fwd in row[pos[1]:]:
-        if fwd.isdecimal():
-            num += fwd
-        else:
-            break
-    
-    for bwd in reversed(row[0:pos[1]]):
-        if bwd.isdecimal():
-            num = bwd + num
-        else:
-            break
-    
-    return int(num)
-
 def get_adj_numbers(symPos : (), numbers : []):
     searcher = [(-1,-1), (-1, 0), (-1, 1), 
                 (0, -1),          (0, 1), 
                 (1, -1), (1, 0),  (1, 1)]
     
-    nums = set()
+    uniqNums = set()
 
     for s in searcher:
         absPos = (symPos[0] + s[0], symPos[1] + s[1])
         for idx in range(len(numbers)):
             if absPos in numbers[idx]["pos"]:
-                nums.add(idx)
-            #nums.append(get_number_at_pos(absPos, lines))
+                uniqNums.add(idx)
 
-    return [int(numbers[n]["num"]) for n in nums]
+    return [int(numbers[n]["num"]) for n in uniqNums]
 
 def get_lines(filename):
     with open(filename) as f:
+        # strip newline at end
         return [line[:-1] for line in f.readlines()]
+
+def flatten_list(l : []):
+    for pn in l:
+        for p in pn:
+           yield p
+    return
 
 def print_answer1(filename):
         lines = get_lines(filename)
         symPos = find_symbols(lines)
         numbers = find_numbers(lines)
-        partNums = [get_adj_numbers(s, numbers, lines) for s in symPos]
-        
-        res = []
-        for pn in partNums:
-            for p in pn:
-                res.append(p)
+        partNums = [get_adj_numbers(s, numbers) for s in symPos]
+        res = flatten_list(partNums)
 
         print(f"answer for {filename} is {sum(res, 0)}")
 
