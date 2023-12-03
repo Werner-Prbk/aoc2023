@@ -18,15 +18,15 @@ def test_parse_sets():
 
 def test_possible():
     line = parse_line("Game 119: 1 blue, 2 yellow; 9 blue, 8 green")
-    res = get_possible([line], {"blue" : 1, "yellow" : 2, "green" : 8})
+    res = get_possible_games([line], {"blue" : 1, "yellow" : 2, "green" : 8})
     assert len(res) == 0
 
-    res = get_possible([line], { "blue" : 9, "yellow" : 2, "green" : 8})
+    res = get_possible_games([line], { "blue" : 9, "yellow" : 2, "green" : 8})
     assert len(res) == 1
     assert res[0] == 119
 
-    res = get_possible([line], { "blue" : 10, "yellow" : 2, "green" : 8})
+    res = get_possible_games([line], { "blue" : 10, "yellow" : 2, "green" : 8})
     assert len(res) == 1
 
-    res = get_possible([line], { "blue" : 10, "yellow" : 2, "green" : 8, "unknown" : 3})
+    res = get_possible_games([line], { "blue" : 10, "yellow" : 2, "green" : 8, "unknown" : 3})
     assert len(res) == 1
