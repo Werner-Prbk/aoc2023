@@ -27,8 +27,18 @@ def print_answer1(filename):
     print(f"answer 1 for {filename} is {sum(res, 0)}")
 
 def print_answer2(filename):
-    return
+    cards = [ parse_card(c) for c in get_lines(filename) ]
+    for c in cards: c["qnt"] = 1    # extend with quantity
+    for a in range(len(cards)):
+        for b in range(cards[a]["qnt"]):
+            for c in range(count_winning_numbers(cards[a])):
+                if (a + c + 1) < len(cards):
+                    cards[a + c + 1]["qnt"] += 1
+    
+    print(f"answer 2 for {filename} is {sum([c["qnt"] for c in cards], 0)}")
 
 if __name__ == "__main__":
     print_answer1("test.txt")
     print_answer1("input.txt")
+    print_answer2("test.txt")
+    print_answer2("input.txt")
