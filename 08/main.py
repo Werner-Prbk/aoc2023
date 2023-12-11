@@ -4,10 +4,9 @@ def get_lines(filename):
         return [line[:-1] for line in f.readlines()]
 
 def parse_nodes(line : str):
-    line.replace(" ", "")
+    line = line.translate(str.maketrans("","", "( )"))
     a,b = line.split("=")
-    b1,b2 = b.strip("() ").split(",")
-    return (a.strip(), (b1,b2.strip()))
+    return (a, b.split(","))
 
 def find_z(instructions, nodes, currNode):
     idx = 0
@@ -19,7 +18,6 @@ def find_z(instructions, nodes, currNode):
         else:
             currNode = nodes[currNode][1]
         idx += 1
-
 
 def print_answer1(filename):
     lines = get_lines(filename)
